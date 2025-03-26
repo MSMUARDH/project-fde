@@ -73,7 +73,6 @@
 
 //     dispatch(updateUserTask({ id: taskId, formData: value }));
 
-
 //     if (status === "succeeded") {
 //       form.resetFields();
 //       navigate("/user/dashboard");
@@ -96,7 +95,6 @@
 //   useEffect(() => {
 //     fetchUserTaskDetails();
 //   }, []);
-
 
 //   const initialDate = moment(task?.completionDate);
 
@@ -175,8 +173,6 @@
 
 // export default TaskCompletionUpdatePage;
 
-
-
 // ! new
 
 import React, { useEffect, useState } from "react";
@@ -226,7 +222,7 @@ interface TaskData {
 const TaskCompletionUpdatePage: React.FC = () => {
   const { taskId } = useParams();
   const [task, setTask] = useState<TaskData | null>(null);
-    const [completedDate, setCompletedDate] = useState("");
+  const [completedDate, setCompletedDate] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm();
@@ -258,43 +254,46 @@ const TaskCompletionUpdatePage: React.FC = () => {
   //   }
   // };
 
+  const handleOnFinish = (value: any) => {
+    if (completedDate == "" && value.completionDate != null) {
+      const starDate = new Date(value.completionDate?._d);
+      const formattedStartDate = format(starDate, "yyyy-MM-dd");
+      value.completionDate = formattedStartDate;
+    } else if (value.completionDate != null) {
+      console.log("completedDate", completedDate);
 
+      const starDate = new Date(value.completionDate?.$d);
 
-    const handleOnFinish = (value: any) => {
-      if (completedDate == "" && value.completionDate != null) {
-        const starDate = new Date(value.completionDate?._d);
-        const formattedStartDate = format(starDate, "yyyy-MM-dd");
-        value.completionDate = formattedStartDate;
-      } else if (value.completionDate != null) {
-        console.log("completedDate", completedDate);
+      const formattedStartDate = format(starDate, "yyyy-MM-dd");
 
-        const starDate = new Date(value.completionDate?.$d);
+      value.completionDate = formattedStartDate;
+      formattedStartDate;
+    }
 
-        const formattedStartDate = format(starDate, "yyyy-MM-dd");
+    if (value.isEnabled == undefined) {
+      value.isEnabled = false;
+    }
 
-        value.completionDate = formattedStartDate;
-        formattedStartDate;
-      }
+    dispatch(updateUserTask({ id: taskId, formData: value }));
 
-      if (value.isEnabled == undefined) {
-        value.isEnabled = false;
-      }
+    if (status === "succeeded") {
+      form.resetFields();
+      navigate("/user/dashboard");
+      toast.success("Task Updated...");
+    }
 
-      dispatch(updateUserTask({ id: taskId, formData: value }));
-
-      if (status === "succeeded") {
-        form.resetFields();
-        navigate("/user/dashboard");
-        toast.success("Task Updated...");
-      }
-
-      console.log("value", value);
-    };
+    console.log("value", value);
+  };
 
   const fetchUserTaskDetails = async () => {
     try {
       const response = await axios.get(
-        `${APP_API_URL}/api/tasks/get-task-details/${taskId}`
+        `${APP_API_URL}/api/tasks/get-task-details/${taskId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       setTask(response.data.task);
     } catch (error) {
@@ -319,42 +318,39 @@ const TaskCompletionUpdatePage: React.FC = () => {
   //   }
   // }, [task, form]);
 
+  const initialDate = moment(task?.completionDate);
 
-    const initialDate = moment(task?.completionDate);
-
-    useEffect(() => {
-      if (task) {
-        // Convert API response to moment objects
-        if (task?.completionDate == null) {
-          console.log("null val found");
-          form.setFieldsValue({
-            completionDate: null,
-            isCompleted: task.isCompleted,
-          });
-        } else {
-          form.setFieldsValue({
-            completionDate: initialDate,
-            isCompleted: task.isCompleted,
-          });
-        }
+  useEffect(() => {
+    if (task) {
+      // Convert API response to moment objects
+      if (task?.completionDate == null) {
+        console.log("null val found");
+        form.setFieldsValue({
+          completionDate: null,
+          isCompleted: task.isCompleted,
+        });
+      } else {
+        form.setFieldsValue({
+          completionDate: initialDate,
+          isCompleted: task.isCompleted,
+        });
       }
-    }, [task, form]);
+    }
+  }, [task, form]);
 
-  
-    const handleRangeChange = () => {
-      // If the user tries to clear the date range or selects only one date, reset the field
-      form.setFieldsValue({
-        completionDate: null, // Clear the date range
-      });
-    };
+  const handleRangeChange = () => {
+    // If the user tries to clear the date range or selects only one date, reset the field
+    form.setFieldsValue({
+      completionDate: null, // Clear the date range
+    });
+  };
 
-    const handleDateChange = (dates: any) => {
-      if (dates) {
-        // console.log(dates.$d);
-        setCompletedDate(dates.$d);
-      }
-    };
-
+  const handleDateChange = (dates: any) => {
+    if (dates) {
+      // console.log(dates.$d);
+      setCompletedDate(dates.$d);
+    }
+  };
 
   if (loading) {
     return (

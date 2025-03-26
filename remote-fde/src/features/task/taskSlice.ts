@@ -39,7 +39,6 @@ interface TaskFormData {
   assignedTo: string;
 }
 
-
 // Define the type for the update payload
 interface UpdateUserPayload {
   id: string | undefined;
@@ -54,7 +53,12 @@ export const getAllTask = createAsyncThunk<
 >("api/fetcTasks", async (_, thunkAPI) => {
   try {
     const response = await axios.get<{ tasks: Task[] }>(
-      `${APP_API_URL}/api/tasks/get-all-tasks`
+      `${APP_API_URL}/api/tasks/get-all-tasks`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
 
     console.log("response.data.tasks getAllTask ", response.data.tasks);
@@ -77,7 +81,12 @@ export const addTask = createAsyncThunk<
   try {
     const response = await axios.post<{ task: Task }>(
       `${APP_API_URL}/api/tasks/create-task`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     return response.data.task;
   } catch (error: any) {
@@ -97,7 +106,12 @@ export const deleteTask = createAsyncThunk<
 >("api/deleteTask", async (taskId, thunkAPI) => {
   try {
     const response = await axios.delete(
-      `${APP_API_URL}/api/tasks/delete-task/${taskId}`
+      `${APP_API_URL}/api/tasks/delete-task/${taskId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
 
     console.log("response deleted", response.data.task._id);
@@ -120,7 +134,12 @@ export const updateTask = createAsyncThunk<
   try {
     const response = await axios.put<{ task: Task }>(
       `${APP_API_URL}/api/tasks/update-task/${id}`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
 
     return response.data.task;
@@ -174,12 +193,8 @@ const taskSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteTask.fulfilled, (state, action: PayloadAction<string>) => {
-
-
         state.status = "succeeded";
-        state.datas = state.datas.filter(
-          (task) => task._id !== action.payload
-        );
+        state.datas = state.datas.filter((task) => task._id !== action.payload);
         console.log("delete action.payload ", action.payload);
         console.log("state.datas after delete", state.datas);
       })

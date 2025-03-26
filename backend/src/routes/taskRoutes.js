@@ -6,16 +6,20 @@ const router = express.Router();
 
 // TODO: PUT authMiddleware for all routes
 
-router.post("/create-task", createTask);
-router.put("/update-task/:taskId", updateTask);
+router.post("/create-task", authMiddleware,createTask);
+router.put("/update-task/:taskId", authMiddleware, updateTask);
+router.delete("/delete-task/:id", authMiddleware, deleteTask);
 
-router.delete("/delete-task/:id", deleteTask);
-router.get("/get-all-tasks", getTasks);
+router.get("/get-all-tasks", authMiddleware, getTasks);
 router.get("/get-user-task",authMiddleware, getUserTasks);
-router.get("/get-task-details/:taskId", getSingeTask);
+router.get("/get-task-details/:taskId", authMiddleware, getSingeTask);
 
 
-router.put("/update-task-completeion/:id", updateTaskCompletion);
+router.put(
+  "/update-task-completeion/:id",
+  authMiddleware,
+  updateTaskCompletion
+);
 
 
 

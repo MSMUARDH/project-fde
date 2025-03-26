@@ -45,7 +45,12 @@ export const getAlluser = createAsyncThunk<
 >("api/fetchUser", async (_, thunkAPI) => {
   try {
     const response = await axios.get<{ users: User[] }>(
-      `${APP_API_URL}/api/users/get-all-users`
+      `${APP_API_URL}/api/users/get-all-users`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     // console.log("response.data.users", response.data.users);
     return response.data.users;
@@ -67,7 +72,12 @@ export const addUser = createAsyncThunk<
   try {
     const response = await axios.post<{ users: User }>(
       `${APP_API_URL}/api/users/create-user`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
 
     console.log("response", response);
@@ -90,7 +100,12 @@ export const deleteUser = createAsyncThunk<
 >("api/deleteUser", async (userId, thunkAPI) => {
   try {
     const response = await axios.delete<{ users: { _id: string } }>(
-      `${APP_API_URL}/api/users/delete-user/${userId}`
+      `${APP_API_URL}/api/users/delete-user/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     console.log("deleted user", response.data.users);
     return response.data.users._id;
@@ -115,7 +130,12 @@ export const updateUser = createAsyncThunk<
 
     const response = await axios.put<{ user: User }>(
       `${APP_API_URL}/api/users/update-user/${id}`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     console.log("Updated data", response.data);
     return response.data.user;

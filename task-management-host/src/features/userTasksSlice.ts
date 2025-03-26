@@ -51,11 +51,7 @@ export const getAllUserTask = createAsyncThunk<
   void,
   { rejectValue: string }
 >("api/fetchUserTasks", async (_, thunkAPI) => {
-    try {
-
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGYzZmM3MTljZTIxZTllODdiMDM4MCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzQyNjg2MzcwLCJleHAiOjE3NDI3NzI3NzB9.MkVYkSYRRA0fDNBFvSeX8xSwcB8oI3XTBkD6WwBlb30"
-      
-        
+  try {
     const response = await axios.get<{ tasks: Task[] }>(
       `${APP_API_URL}/api/tasks/get-user-task`,
       {
@@ -63,7 +59,7 @@ export const getAllUserTask = createAsyncThunk<
           Authorization: `Bearer ${localStorage.getItem("token")}`, // Add the JWT token to the header
         },
       }
-    );  
+    );
     return response.data.tasks;
   } catch (error: any) {
     const message =
@@ -83,7 +79,12 @@ export const addTask = createAsyncThunk<
   try {
     const response = await axios.post<{ tasks: Task }>(
       `${APP_API_URL}/api/tasks/create-task`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     return response.data.tasks;
   } catch (error: any) {
@@ -103,7 +104,12 @@ export const deleteTask = createAsyncThunk<
 >("api/deletetask", async (taskId, thunkAPI) => {
   try {
     const response = await axios.delete<{ task: { _id: string } }>(
-      `${APP_API_URL}/api/tasks/delete-task/${taskId}`
+      `${APP_API_URL}/api/tasks/delete-task/${taskId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     return response.data.task._id;
   } catch (error: any) {
@@ -121,13 +127,16 @@ export const updateUserTask = createAsyncThunk<
   UpdateUserPayload,
   { rejectValue: string }
 >("api/updateUserTask", async ({ id, formData }, thunkAPI) => {
-    try {
-      
-
+  try {
     const response = await axios.put<{ task: Task }>(
       `${APP_API_URL}/api/tasks/update-task-completeion/${id}`,
-      formData
-      );
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
     return response.data.task;
   } catch (error: any) {
     const message =
@@ -148,10 +157,13 @@ const taskSlice = createSlice({
       .addCase(getAllUserTask.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getAllUserTask.fulfilled, (state, action: PayloadAction<Task[]>) => {
-        state.status = "succeeded";
-        state.datas = action.payload;
-      })
+      .addCase(
+        getAllUserTask.fulfilled,
+        (state, action: PayloadAction<Task[]>) => {
+          state.status = "succeeded";
+          state.datas = action.payload;
+        }
+      )
       .addCase(
         getAllUserTask.rejected,
         (state, action: PayloadAction<string | undefined>) => {
@@ -195,20 +207,22 @@ const taskSlice = createSlice({
       .addCase(updateUserTask.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(updateUserTask.fulfilled, (state, action: PayloadAction<Task>) => {
+      .addCase(
+        updateUserTask.fulfilled,
+        (state, action: PayloadAction<Task>) => {
           state.status = "succeeded";
-        const updatedUserTask = action.payload;
+          const updatedUserTask = action.payload;
 
           console.log("updatedTask", updatedUserTask);
-          
-          
-        const index = state.datas.findIndex(
-          (task) => task._id === updatedUserTask._id
-        );
-        if (index !== -1) {
-          state.datas[index] = updatedUserTask;
+
+          const index = state.datas.findIndex(
+            (task) => task._id === updatedUserTask._id
+          );
+          if (index !== -1) {
+            state.datas[index] = updatedUserTask;
+          }
         }
-      })
+      )
       .addCase(
         updateUserTask.rejected,
         (state, action: PayloadAction<string | undefined>) => {

@@ -53,7 +53,12 @@ export const getAllTask = createAsyncThunk<
 >("api/fetcTasks", async (_, thunkAPI) => {
   try {
     const response = await axios.get<{ tasks: Task[] }>(
-      `${APP_API_URL}/api/tasks/get-all-tasks`
+      `${APP_API_URL}/api/tasks/get-all-tasks`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
 
     return response.data.tasks;
@@ -75,7 +80,12 @@ export const addTask = createAsyncThunk<
   try {
     const response = await axios.post<{ tasks: Task }>(
       `${APP_API_URL}/api/tasks/create-task`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     return response.data.tasks;
   } catch (error: any) {
@@ -95,7 +105,12 @@ export const deleteTask = createAsyncThunk<
 >("api/deletetask", async (taskId, thunkAPI) => {
   try {
     const response = await axios.delete<{ task: { _id: string } }>(
-      `${APP_API_URL}/api/tasks/delete-task/${taskId}`
+      `${APP_API_URL}/api/tasks/delete-task/${taskId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
     return response.data.task._id;
   } catch (error: any) {
@@ -116,7 +131,12 @@ export const updateTask = createAsyncThunk<
   try {
     const response = await axios.put<{ task: Task }>(
       `${APP_API_URL}/api/tasks/update-task/${id}`,
-      formData
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
     );
 
     return response.data.task;

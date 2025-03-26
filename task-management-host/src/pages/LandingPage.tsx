@@ -6,8 +6,7 @@ import {
   Button,
   Card,
   Space,
-  Divider,
-  Badge,
+  Divider
 } from "antd";
 import {
   CheckCircleOutlined,
@@ -91,7 +90,7 @@ const LandingPage = () => {
           </Paragraph>
           <Space size="large">
             <Button onClick={() => navigate('/login')} type="primary" size="large">
-              Get Started for Free
+              Get Started!
             </Button>
           </Space>
           <div style={{ marginTop: "40px" }}>
