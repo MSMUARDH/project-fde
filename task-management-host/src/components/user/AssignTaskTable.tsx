@@ -36,7 +36,7 @@ const AssignTaskTable: React.FC = ({ userTasks }) => {
       dataIndex: "startDate",
       key: "startDate",
       render: (_, record) => {
-        // Create a Date object
+
         const date = new Date(record.startDate);
         const formattedDate = format(date, "EEE MMM dd yyyy"); // "Tue Mar 19 2025"
 
@@ -48,11 +48,11 @@ const AssignTaskTable: React.FC = ({ userTasks }) => {
       dataIndex: "endDate",
       key: "endDate",
       render: (_, record) => {
-        // Create a Date object
+     
         const date = new Date(record.endDate);
         const formattedDate = format(date, "EEE MMM dd yyyy"); // "Tue Mar 19 2025"
 
-        // return <p>{formattedDate}</p>;
+ 
         return <Tag color="purple">{formattedDate}</Tag>;
       },
     },
@@ -61,7 +61,7 @@ const AssignTaskTable: React.FC = ({ userTasks }) => {
       dataIndex: "completedDate",
       key: "completedDate",
       render: (_: any, record) => {
-        // Create a Date object
+
         const date = new Date(record.completionDate);
         const formattedDate = format(date, "EEE MMM dd yyyy"); // "Tue Mar 19 2025"
 
@@ -78,7 +78,7 @@ const AssignTaskTable: React.FC = ({ userTasks }) => {
       render: (_, record) => (
         <Space size="middle">
           <a onClick={() => navigate(`/user/update-completion/${record._id}`)}>
-            {/* Update Completion */}
+         
             <EyeFilled
               style={{ fontSize: "30px",  }}
             />

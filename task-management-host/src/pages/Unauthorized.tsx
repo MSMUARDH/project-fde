@@ -8,11 +8,11 @@ const Unauthorized: React.FC = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1); // Go back to the previous page
+    navigate(-1); 
   };
 
   const handleGoHome = () => {
-    navigate("/"); // Navigate to the home page
+    navigate("/"); 
   };
 
   return (

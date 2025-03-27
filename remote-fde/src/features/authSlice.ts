@@ -2,12 +2,12 @@
 
 
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios"; // or any other HTTP client
+import axios from "axios"; 
 
 
 const APP_API_URL = import.meta.env.VITE_BASE_URL;
 
-// Define your types
+
 interface User {
   name: string;
   role: string;
@@ -19,14 +19,14 @@ interface AuthState {
   error: string | null;
 }
 
-// Initial state
+
 const initialState: AuthState = {
   user: null,
   loading: false,
   error: null,
 };
 
-// Define the async thunk for login
+
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (

@@ -27,7 +27,7 @@ const AddNewTaskPage: React.FC = () => {
   const navigate = useNavigate();
   const variant = Form.useWatch("variant", form);
 
-  const { datas } = useSelector((state: RootState) => state.user);
+  const  datas  = useSelector((state: RootState) => state.user.datas);
 
   const { status } = useSelector((state: RootState) => state.task);
 
@@ -71,7 +71,7 @@ const AddNewTaskPage: React.FC = () => {
     }
   };
 
-  const options = datas.map((user) => {
+  const options = datas?.map((user) => {
     return { value: user._id, label: user.firstName };
   });
 

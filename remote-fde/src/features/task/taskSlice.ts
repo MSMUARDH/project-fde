@@ -3,7 +3,7 @@ import axios from "axios";
 
 const APP_API_URL = import.meta.env.VITE_BASE_URL;
 
-// Define the type for a single make
+
 interface Task {
   _id: string;
   taskName: string;
@@ -16,21 +16,21 @@ interface Task {
   completionDate: string;
 }
 
-// Define the state type
+
 interface TaskState {
   datas: Task[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
-// Initial state
+
 const initialState: TaskState = {
   datas: [],
   status: "idle",
   error: null,
 };
 
-// Define the type for the form data
+
 interface TaskFormData {
   taskName: string;
   description: string;
@@ -39,7 +39,7 @@ interface TaskFormData {
   assignedTo: string;
 }
 
-// Define the type for the update payload
+
 interface UpdateUserPayload {
   id: string | undefined;
   formData: TaskFormData;

@@ -24,7 +24,6 @@ const APP_API_URL = import.meta.env.VITE_BASE_URL;
 interface UserData {
   firstName: string;
   lastName: string;
-  // "email" : "msmuaz98@gmail.com" ,
   mobileNumber: number;
   address: string;
   isEnabled: boolean;
@@ -51,7 +50,6 @@ const EditUserPage: React.FC = () => {
     }
 
     dispatch(updateUser({ id: userId, formData: value }));
-    // dispatch(addUser(value));
     dispatch(getAlluser());
 
     if (status === "succeeded") {
@@ -70,7 +68,7 @@ const EditUserPage: React.FC = () => {
     setUser(response.data.user);
   };
 
-  // console.log("user state",user._id);
+
 
   const getSelectedLocationAddress = (place) => {
     console.log("Location from the parent", place);
@@ -85,7 +83,7 @@ const EditUserPage: React.FC = () => {
     fetchUserDetails();
   }, []);
 
-  // Set initial values once userData is available
+
   useEffect(() => {
     if (user) {
       form.setFieldsValue({
@@ -165,13 +163,6 @@ const EditUserPage: React.FC = () => {
           />
         </Form.Item>
 
-        {/* <Form.Item
-          label="Address"
-          name="address"
-          rules={[{ required: true, message: "Please provide address!" }]}
-        >
-          <Input />
-        </Form.Item> */}
         <Form.Item
           label="Role"
           name="role"

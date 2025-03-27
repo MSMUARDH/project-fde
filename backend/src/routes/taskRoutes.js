@@ -10,7 +10,7 @@ router.post("/create-task", authMiddleware,createTask);
 router.put("/update-task/:taskId", authMiddleware, updateTask);
 router.delete("/delete-task/:id", authMiddleware, deleteTask);
 
-router.get("/get-all-tasks", authMiddleware, getTasks);
+router.get("/get-all-tasks", getTasks);
 router.get("/get-user-task",authMiddleware, getUserTasks);
 router.get("/get-task-details/:taskId", authMiddleware, getSingeTask);
 

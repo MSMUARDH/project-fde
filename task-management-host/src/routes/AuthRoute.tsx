@@ -46,7 +46,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ element }) => {
     return <PageLoader />;
   }
 
-  // If user is logged in, redirect to home/dashboard
+
     if (user?.role == "admin") return <Navigate to="/admin/task-management" replace />;
     
     if (user?.role == "user") return <Navigate to="/user/dashboard" replace />;
@@ -54,7 +54,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ element }) => {
 
 
 
-  // If not logged in, show the login page
+
   return element;
 };
 
